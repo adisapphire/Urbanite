@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { City } from '../../models/City';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { CityService } from '../../services/city.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +11,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  cities$: Observable<any>;
+  private searchTerms = new Subject<string>();
+  constructor(private cityservice: CityService) { }
+
+  search(term: string): void {
+    this.searchTerms.next(term);
+  }
 
   ngOnInit() {
+
+    this.cities$ = this.searchTerms.pipe(
+      // wait 300ms after each keystroke before considering the term
+      debounceTime(300),
+ 
+      // ignore new term if same as previous term
+      distinctUntilChanged(),
+ 
+      // switch to new search observable each time the term changes
+      switchMap((term: string) => this.cityservice.searchTasks(term)),
+    );
+
+
   }
 
 }

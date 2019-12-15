@@ -8,6 +8,7 @@ import { DetailComponent } from './pages/detail/detail.component';
 import { CardComponent } from './utils/card/card.component';
 import { SearchComponent } from './utils/search/search.component';
 import { UserlistComponent } from './pages/userlist/userlist.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,9 @@ import { UserlistComponent } from './pages/userlist/userlist.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]
